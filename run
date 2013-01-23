@@ -11,7 +11,9 @@ on run argv
 	
 	set userName to short user name of (system info)
 	
-	if (count of item = )
+	if count of argv < 2 then
+		logEvent("Usage: ./run TestScript.js 564E26A0-....-....-....-............/AppName.app/")
+	end
 	
 	set scriptName to item 1 of argv
 	set applicationFolder to item 2 of argv
