@@ -15,3 +15,5 @@ The TestScript has to be located outside of the iOS-Screenshot-Automator. To tak
 Don't forget to import Helper.js in your javascript UIAutomation file. 
 
 If you want to set the carrier name manually, take a look at the "changeCarrierName" file
+
+If you have any problems, check out the log file: ~/Library/Logs/AppleScript-events.log

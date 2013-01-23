@@ -20,6 +20,7 @@ on run argv
 	
 	set automationTemplate to "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
 	set applicationsFolder to "\"/Users/" & userName & "/Library/Application Support/iPhone Simulator/6.0/Applications/" & applicationFolder & "\""
+	-- For some reason we have to use the absolute path. Seems to have something to do with Apple's Instruments
 	
 	repeat with currentDevice in allDevices
 		changeDevice(currentDevice)
