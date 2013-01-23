@@ -1,0 +1,80 @@
+#!/usr/bin/env osascript
+
+on run argv
+	-- Set all devices you want to use for screenshots here 
+	-- (has to match the name of the menu items of the iOS Simulator)
+	set allDevices to {"iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
+	-- Set all languages your app is translated to. 
+	set allLanguages to {"en" , "de"}
+	
+	didFinish() -- Clean up old builds
+	
+	
+	repeat with currentDevice in allDevices
+		changeDevice(currentDevice)
+		
+		repeat with currentLang in allLanguages
+			do shell script "./changeLanguage " & currentLang
+			logEvent("Changed language to " & currentLang)
+			
+			-- TODO: a more generic way to get the .app folder
+			set currentResults to do shell script "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate \"/Users/felixkrause/Library/Application Support/iPhone Simulator/6.0/Applications/564E26A0-0D08-488B-A73E-2BDBB0D10E7C/Wandermap.app\" -e UIASCRIPT \"ToursprungTest.js\" -e UIARESULTSPATH Results"
+			-- TODO: get results and maybe show error message
+			-- Success response: Pass: xy
+			-- Error response: Fail: xy 
+			
+			
+			logEvent(currentResults)
+			
+			 tell application "iPhone Simulator" to quit
+		end repeat
+	end repeat
+	
+	didFinish()
+end run
+
+on logEvent(themessage)
+	-- All the recent events, results and error can be found at the give path
+	-- It can easily be opened with the regular "Console" app
+	set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & themessage
+	do shell script "echo '" & theLine & "' >> ~/Library/Logs/AppleScript-events.log"
+end log_event
+
+on didFinish()
+	-- Clear useless instrumentscli files and copy the screenshots to the proper folder
+	-- If you prefer other folder names, just rename it here.
+	do shell script "rm -rf ./instrumentscli*"
+	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
+	try
+		do shell script "mv Results/Run* Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & "/"
+	on error errMsg
+	    logEvent(errMsg)
+	end try
+end didFinish
+
+on changeDevice(deviceName)
+	delay (1)
+	logEvent("Start changing device to " & deviceName)	
+	
+	tell application "iPhone Simulator" to activate
+	tell application "System Events"
+		tell process "iPhone Simulator"
+			tell menu bar 1
+				tell menu bar item 5
+					-- Hardware menu
+					tell menu 1
+						-- Device
+						tell menu item 1
+							-- Device sub menu
+							tell menu 1
+								click menu item deviceName
+							end tell
+						end tell
+          			end tell
+        		end tell
+      		end tell
+    	end tell
+  	end tell
+	
+	logEvent("Changed device to " & deviceName)
+end changeDevice
