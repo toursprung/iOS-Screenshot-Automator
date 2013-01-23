@@ -9,6 +9,15 @@ on run argv
 	
 	didFinish() -- Clean up old builds
 	
+	set userName to short user name of (system info)
+	
+	if (count of item = )
+	
+	set scriptName to item 1 of argv
+	set applicationFolder to item 2 of argv
+	
+	set automationTemplate to "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
+	set applicationsFolder to "\"/Users/" & userName & "/Library/Application Support/iPhone Simulator/6.0/Applications/" & applicationFolder & "\""
 	
 	repeat with currentDevice in allDevices
 		changeDevice(currentDevice)
@@ -17,8 +26,8 @@ on run argv
 			do shell script "./changeLanguage " & currentLang
 			logEvent("Changed language to " & currentLang)
 			
-			-- TODO: a more generic way to get the .app folder
-			set currentResults to do shell script "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate \"/Users/felixkrause/Library/Application Support/iPhone Simulator/6.0/Applications/564E26A0-0D08-488B-A73E-2BDBB0D10E7C/Wandermap.app\" -e UIASCRIPT \"ToursprungTest.js\" -e UIARESULTSPATH Results"
+			set currentResults to do shell script automationTemplate & " " & applicationsFolder & " -e UIASCRIPT \"../" & scriptName & "\" -e UIARESULTSPATH Results"
+			
 			-- TODO: get results and maybe show error message
 			-- Success response: Pass: xy
 			-- Error response: Fail: xy 
