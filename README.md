@@ -24,12 +24,11 @@ Use tuneup_js to start your scripts and define tests. You can also use these scr
 
 Example of TestScript.js
 ```javascript
-#import "iOS-Screenshot-Automator"
+#import "iOS-Screenshot-Automator/Helper.js"
 
 
 test("Login Test", loginTest);
 test("Route Test", routeDetailsTest);
-
 ...
 
 function loginTest(target, app)
