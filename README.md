@@ -11,7 +11,11 @@ Define which languages and simulator types you want to use in the "run"-file.
 ```shell
 ./run ../TestScript.js 564E26A0-....-....-....-............/AppName.app/
 ```
-The TestScript has to be located outside of the iOS-Screenshot-Automator. To take screenshots with UIAutomation use captureLocalizedScreenshot. It will automatically name the file properly and put it in the Results folder. (Don't forget to import Helper.js in your javascript UIAutomation script)
+
+Unfortunately you have to get the code for your app as well as the app name itself. I'm currently working on automating this as well.
+
+To take screenshots with UIAutomation use captureLocalizedScreenshot. It will automatically name the file properly and put it in the Results folder. (Don't forget to import Helper.js in your javascript UIAutomation script)
+
 
 If you want to set the carrier name manually, take a look at the "changeCarrierName" file
 
