@@ -55,6 +55,12 @@ on didFinish()
 	-- Clear useless instrumentscli files and copy the screenshots to the proper folder
 	-- If you prefer other folder names, just rename it here.
 	do shell script "rm -rf ./instrumentscli*"
+	
+	try
+		do shell script "mkdir Results"
+	on error errMsg -- to ignore errors when the folder already exists
+	end try
+	
 	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
 	try
 		do shell script "mv Results/Run* Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & "/"
