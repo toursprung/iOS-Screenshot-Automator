@@ -17,6 +17,30 @@ If you want to set the carrier name manually, take a look at the "changeCarrierN
 
 Use tuneup_js to start your scripts and define tests. You can also use these scripts to do unit testing.
 
+
+Example of TestScript.js
+```javascript
+#import "iOS-Screenshot-Automator"
+
+
+test("Login Test", loginTest);
+test("Route Test", routeDetailsTest);
+
+...
+
+function loginTest(target, app)
+{
+	var window = app.mainWindow();
+	var navBar = window.navigationBar();
+	
+	...
+	
+	captureLocalizedScreenshot("Login");
+	
+	....
+}
+```
+
 Open Todos:
 * Accepting the app name as parameter instead of the application folder, that changes after reinstalling the app.
 * Automatic naming of screenshots currently uses the wrong language
