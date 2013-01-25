@@ -19,7 +19,10 @@ To take screenshots with UIAutomation use captureLocalizedScreenshot. It will au
 
 If you want to set the carrier name manually, take a look at the "changeCarrierName" file
 
-Use tuneup_js to start your scripts and define tests. You can also use these scripts to do unit testing.
+You can use tuneup_js to start your scripts and define tests. It's a really great library that helps you develop unit tests faster. You can also use these scripts to do unit testing.
+
+To fetch the tuneup_js submodule, use the following git command.
+      git submodule update --init
 
 
 Example of TestScript.js
@@ -44,9 +47,11 @@ function loginTest(target, app)
 }
 ```
 
-Open Todos:
-* Accepting the app name as parameter instead of the application folder, that changes after reinstalling the app.
-* Automatic naming of screenshots currently uses the wrong language
+#Open Todos:#
+* Accepting the app name as parameter instead of the application folder
+* Automatic naming of screenshots (currently not updating the language)
 * Put all resulting screenshots in one folder (or more meaningful folders)
 * Raise AppleScript exception when UIAutomation script fails
 * If possible: Automate uploading screenshots to iTunesConnect directly
+
+![iOS Screenshot Automator](http://www.toursprung.com/wp-content/uploads/2013/01/ScreenshotToolImage.png)
