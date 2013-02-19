@@ -4,12 +4,14 @@
 cd ~/Desktop/
  
 # Copy the file here.
-sudo cp /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/CoreServices/SpringBoard.app/German.lproj/SpringBoard.strings ~/Desktop
+sudo cp /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings ~/Desktop
  
 # Change the format from binary to XML.
 sudo plutil -convert xml1 SpringBoard.strings
 
 # When you open the .strings file with any text editor (e.g. Textmate, vim), you can search for CARRIER and replace its value
  
-# Now go back to the simulator folder.
-cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/CoreServices/SpringBoard.app/English.lproj/
+# Now copy back to the simulator folder.
+sudo cp SpringBoard.strings /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/CoreServices/SpringBoard.app/English.lproj/
+
+# Make sure not to mix up any languages
