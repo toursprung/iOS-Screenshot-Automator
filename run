@@ -19,7 +19,7 @@ on run argv
 	set applicationFolder to item 2 of argv
 	
 	set automationTemplate to "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
-	set applicationsFolder to "\"/Users/" & userName & "/Library/Application Support/iPhone Simulator/6.0/Applications/" & applicationFolder & "\""
+	set applicationsFolder to "\"/Users/" & userName & "/Library/Application Support/iPhone Simulator/6.1/Applications/" & applicationFolder & "\""
 	
 	repeat with currentDevice in allDevices
 		changeDevice(currentDevice)
