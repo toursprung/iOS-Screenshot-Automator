@@ -7,19 +7,53 @@ on run argv
 	-- Set all languages your app is translated to. 
 	set allLanguages to {"en" , "de"}
 	
+	set iOSVersion to "6.1"
+	
 	didFinish() -- Clean up old builds
 	
 	set userName to short user name of (system info)
 	
 	if count of argv < 2 then
-		logEvent("Usage: ./run TestScript.js 564E26A0-....-....-....-............/AppName.app/")
+		logEvent("Usage: ./run TestScript.js AppName")
+		error number -128
 	end
 	
 	set scriptName to item 1 of argv
-	set applicationFolder to item 2 of argv
+	set appName to item 2 of argv
 	
 	set automationTemplate to "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
-	set applicationsFolder to "\"/Users/" & userName & "/Library/Application Support/iPhone Simulator/6.1/Applications/" & applicationFolder & "\""
+	set applicationsFolder to "/Users/" & userName & "/Library/Application Support/iPhone Simulator/" & iOSVersion & "/Applications/"
+	set appFolderName to ""
+	
+	
+	set applicationsFolderPosix to POSIX file applicationsFolder
+	tell application "Finder"
+		set subFolders to every folder of folder applicationsFolderPosix
+	end tell
+	
+	repeat with currentFolder in subFolders
+		tell application "Finder"
+	    	set subFiles to every file of currentFolder
+		end tell
+		
+		repeat with currentSubfolder in subFiles
+			-- inside the app
+			if (currentSubFolder as string) contains appName then
+				set appFolderName to currentSubFolder
+			end if
+		end repeat
+	end repeat
+	
+	if not appFolderName as string = "" then
+		logEvent("Found the app: " & appFolderName)
+	else
+		logEvent("Couldn't find the app you were looking for")
+		error number -128
+	end if
+	
+	set unixPathToApplication to (the POSIX path of (appFolderName as alias))
+	
+	logEvent("Unix Path: " & unixPathToApplication)
 	
 	repeat with currentDevice in allDevices
 		changeDevice(currentDevice)
@@ -28,7 +62,7 @@ on run argv
 			do shell script "./changeLanguage " & currentLang
 			logEvent("Changed language to " & currentLang)
 			
-			set currentResults to do shell script automationTemplate & " " & applicationsFolder & " -e UIASCRIPT \"" & scriptName & "\" -e UIARESULTSPATH Results"
+			set currentResults to do shell script automationTemplate & " \"" & unixPathToApplication & "\" -e UIASCRIPT \"" & scriptName & "\" -e UIARESULTSPATH Results"
 			
 			-- TODO: get results and maybe show error message
 			-- Success response: Pass: xy
@@ -43,6 +77,7 @@ on run argv
 	
 	didFinish()
 end run
+
 
 on logEvent(themessage)
 	-- All the recent events, results and error can be found at the give path

@@ -9,10 +9,8 @@ Define which languages and simulator types you want to use in the "run"-file.
 
 #Run the script:#
 ```shell
-./run ../TestScript.js 564E26A0-....-....-....-............/AppName.app/
+./run ../TestScript.js AppName
 ```
-
-Unfortunately you have to get the code for your app as well as the app name itself. I'm currently working on automating this as well.
 
 To take screenshots with UIAutomation use captureLocalizedScreenshot. It will automatically name the file properly and put it in the Results folder. (Don't forget to import Helper.js in your javascript UIAutomation script)
 
@@ -47,9 +45,9 @@ function loginTest(target, app)
 }
 ```
 
+If you want to add the orientation of the iDevice in your screenshot names as well, configure it in the Helper.js file.
+
 #Open Todos:#
-* Accepting the app name as parameter instead of the application folder
-* Automatic naming of screenshots (currently not updating the language)
 * Put all resulting screenshots in one folder (or more meaningful folders)
 * Raise AppleScript exception when UIAutomation script fails
 * If possible: Automate uploading screenshots to iTunesConnect directly
