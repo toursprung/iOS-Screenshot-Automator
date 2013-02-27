@@ -13,10 +13,10 @@ on run argv
 	set posixProjectPath to (the POSIX path of projectPath)
 	
 	tell application "Xcode"
-	   open posixProjectPath & projectName
+	   open posixProjectPath
 	end tell
 	
-	delay(20)
+	delay(15)
 	
 	tell application "Xcode" to activate
 	
@@ -42,7 +42,7 @@ on run argv
 						tell menu item "Destination"
 							tell menu 1
 								-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
-								click menu item "iPhone " & iOSVersion & " Simulator"
+								click menu item ("iPhone " & iOSVersion & " Simulator")
 							end tell
 						end tell
 					end tell
