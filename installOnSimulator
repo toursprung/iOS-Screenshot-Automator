@@ -1,0 +1,70 @@
+#!/usr/bin/env osascript
+
+on run argv
+	if count of argv < 2 then
+		logEvent("Usage: ./installOnSimulator PathToProject ProjectName iOSVersion(6.1,5.0)")
+		error number -128
+	end
+	
+	set iOSVersion to item 3 of argv
+	set projectName to item 2 of argv
+ 	set projectPath to item 1 of argv
+	
+	set posixProjectPath to (the POSIX path of projectPath)
+	
+	tell application "Xcode"
+	   open posixProjectPath & projectName
+	end tell
+	
+	delay(20)
+	
+	tell application "Xcode" to activate
+	
+	tell application "System Events"
+		tell process "Xcode"
+			tell menu bar 1
+				tell menu bar item "Product"
+					tell menu 1
+						tell menu item "Scheme"
+							tell menu 1
+								-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
+								click menu item projectName
+							end tell
+						end tell
+					end tell
+				end tell
+			end tell
+		end tell
+		tell process "Xcode"
+			tell menu bar 1
+				tell menu bar item "Product"
+					tell menu 1
+						tell menu item "Destination"
+							tell menu 1
+								-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
+								click menu item "iPhone " & iOSVersion & " Simulator"
+							end tell
+						end tell
+					end tell
+				end tell
+			end tell
+		end tell
+		tell process "Xcode"
+			tell menu bar 1
+				tell menu bar item "Product"
+					tell menu 1
+						click menu item "Run"
+					end tell
+				end tell
+			end tell
+		end tell
+	end tell
+end run
+
+
+on logEvent(themessage)
+	-- All the recent events, results and error can be found at the give path
+	-- It can easily be opened with the regular "Console" app
+	set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & themessage
+	do shell script "echo '" & theLine & "' >> ~/Library/Logs/AppleScript-events.log"
+end log_event
