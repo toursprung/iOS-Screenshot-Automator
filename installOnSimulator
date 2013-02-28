@@ -16,49 +16,53 @@ on run argv
 	   open posixProjectPath
 	end tell
 	
-	delay(15)
+	delay(20)
 	
 	tell application "Xcode" to activate
 	
-	tell application "System Events"
-		tell process "Xcode"
-			tell menu bar 1
-				tell menu bar item "Product"
-					tell menu 1
-						tell menu item "Scheme"
-							tell menu 1
-								-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
-								click menu item projectName
+	try
+		tell application "System Events"
+			tell process "Xcode"
+				tell menu bar 1
+					tell menu bar item "Product"
+						tell menu 1
+							tell menu item "Scheme"
+								tell menu 1
+									-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
+									click menu item projectName
+								end tell
 							end tell
 						end tell
 					end tell
 				end tell
 			end tell
-		end tell
-		tell process "Xcode"
-			tell menu bar 1
-				tell menu bar item "Product"
-					tell menu 1
-						tell menu item "Destination"
-							tell menu 1
-								-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
-								click menu item ("iPhone " & iOSVersion & " Simulator")
+			tell process "Xcode"
+				tell menu bar 1
+					tell menu bar item "Product"
+						tell menu 1
+							tell menu item "Destination"
+								tell menu 1
+									-- Set the proper scheme if we're using workspaces (e.g. cocoapods)
+									click menu item ("iPhone " & iOSVersion & " Simulator")
+								end tell
 							end tell
 						end tell
 					end tell
 				end tell
 			end tell
-		end tell
-		tell process "Xcode"
-			tell menu bar 1
-				tell menu bar item "Product"
-					tell menu 1
-						click menu item "Run"
+			tell process "Xcode"
+				tell menu bar 1
+					tell menu bar item "Product"
+						tell menu 1
+							click menu item "Run"
+						end tell
 					end tell
 				end tell
 			end tell
 		end tell
-	end tell
+	on error errMsg
+		logEvent "Error: " & errMsg
+	end try
 end run
 
 
