@@ -61,7 +61,7 @@ on run argv
 			end tell
 		end tell
 	on error errMsg
-		logEvent "Error: " & errMsg
+		logEvent ("Error: " & errMsg)
 	end try
 end run
 
