@@ -96,6 +96,8 @@ on didFinish()
 	end try
 	
 	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
+	do shell script "rm -rf Latest"
+	do shell script "ln -s Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & " Latest"
 	try
 		do shell script "mv Results/Run* Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & "/"
 	on error errMsg
