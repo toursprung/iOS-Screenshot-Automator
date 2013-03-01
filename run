@@ -9,7 +9,7 @@ on run argv
 	
 	set iOSVersion to "6.1"
 	
-	didFinish() -- Clean up old builds
+	setupFolders()
 	
 	set userName to short user name of (system info)
 	
@@ -81,7 +81,7 @@ on run argv
 		end repeat
 	end repeat
 	
-	didFinish()
+	do shell script "rm -rf ./instrumentscli*"
 end run
 
 
@@ -92,9 +92,9 @@ on logEvent(themessage)
 	do shell script "echo '" & theLine & "' >> ~/Library/Logs/AppleScript-events.log"
 end log_event
 
-on didFinish()
+on setupFolders()
 	-- Clear useless instrumentscli files and copy the screenshots to the proper folder
-	-- If you prefer other folder names, just rename it here.
+	-- If you prefer other folder names, just change it here.
 	do shell script "rm -rf ./instrumentscli*"
 	
 	try
@@ -102,7 +102,11 @@ on didFinish()
 	on error errMsg -- to ignore errors when the folder already exists
 	end try
 	
+	do shell script "rm -rf Results/Run*"
+	
 	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
+	
+	-- Create the link to the latest build
 	do shell script "rm -rf Latest"
 	do shell script "ln -s Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & " Latest"
 	try
@@ -110,7 +114,7 @@ on didFinish()
 	on error errMsg
 	    logEvent(errMsg)
 	end try
-end didFinish
+end setupFolders
 
 on changeDevice(deviceName)
 	delay (1)
