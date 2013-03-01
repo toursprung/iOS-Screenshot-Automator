@@ -70,7 +70,14 @@ on run argv
 			
 			logEvent(currentResults)
 			
-			 tell application "iPhone Simulator" to quit
+			try
+				do shell script "mv Results/Run\\ 1/* Latest/"
+				do shell script "rm -rf Results/Run\\ 1"
+			on error errMsg
+			    logEvent(errMsg)
+			end try
+			
+			tell application "iPhone Simulator" to quit
 		end repeat
 	end repeat
 	
