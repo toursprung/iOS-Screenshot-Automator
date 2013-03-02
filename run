@@ -114,7 +114,11 @@ on setupFolders()
 	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
 	
 	-- Create the link to the latest build
-	do shell script "rm Latest"
+	try
+		do shell script "rm Latest"
+	on error errMsg -- to ignore errors when the folder was not yet created
+	end try
+	
 	do shell script "ln -s Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & " Latest"
 	try
 		do shell script "mv Results/Run* Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & "/"
