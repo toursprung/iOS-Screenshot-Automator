@@ -53,6 +53,8 @@ on run argv
 	set unixPathToApplication to (the POSIX path of (appFolderName as alias))
 	
 	logEvent("Unix Path: " & unixPathToApplication)
+
+	set errorLog to " "
 	
 	repeat with currentDevice in allDevices
 		changeDevice(currentDevice)
@@ -63,9 +65,9 @@ on run argv
 			
 			set currentResults to do shell script automationTemplate & " \"" & unixPathToApplication & "\" -e UIASCRIPT \"" & scriptName & "\" -e UIARESULTSPATH Results"
 			
-			-- TODO: get results and maybe show error message
-			-- Success response: Pass: xy
-			-- Error response: Fail: xy 
+			if (currentResults as string) contains "Fail:" then
+				set errorLog to (errorLog & currentResults)
+			end if
 			
 			
 			logEvent(currentResults)
@@ -82,6 +84,11 @@ on run argv
 	end repeat
 	
 	do shell script "rm -rf ./instrumentscli*"
+
+	if length of errorLog > 10 then
+		logEvent("Some errors occurred: " & errorLog)
+		do shell script "echo '" & errorLog & "' > Latest/errorLog.txt"
+	end if
 end run
 
 
@@ -107,7 +114,7 @@ on setupFolders()
 	do shell script "mkdir Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string)
 	
 	-- Create the link to the latest build
-	do shell script "rm -rf Latest"
+	do shell script "rm Latest"
 	do shell script "ln -s Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & " Latest"
 	try
 		do shell script "mv Results/Run* Results/Build-" & (do shell script "date  +'%Y.%m.%d-%H:%M:%S'" as string) & "/"
