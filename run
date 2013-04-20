@@ -3,9 +3,9 @@
 on run argv
 	-- Set all devices you want to use for screenshots here 
 	-- (has to match the name of the menu items of the iOS Simulator)
-	set allDevices to {"iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
+	set allDevices to {"iPad (Retina)", "iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
 	-- Set all languages your app is translated to. 
-	set allLanguages to {"en" , "de"}
+	set allLanguages to {"en", "tr" }
 	
 	set iOSVersion to "6.1"
 	
@@ -56,7 +56,26 @@ on run argv
 
 	set errorLog to " "
 	
+	try
+	-- save the actual value of "UIDeviceFamily" field
+	changeInfoPlist(unixPathToApplication, "Copy :UIDeviceFamily :UIDeviceFamily_backup")
+	on error
+	-- ignore any "Entry Already Exists" error. It may happen when this command exits
+	-- without in the middle of the execution. In this case we can just ignore the 
+	-- the value of UIDeviceFamily because the correct value is aler
+	end
+	
+	changeInfoPlist(unixPathToApplication, "Delete :UIDeviceFamily")
 	repeat with currentDevice in allDevices
+		-- make the app support only iPhone or iPad because universal apps don't work 
+		-- well with the Instruments. (Instruments always opens them with iPad simulator)
+		set deviceFamily to "1"
+		if currentDevice contains "iPad"
+		  set deviceFamily to "2"
+		end if
+		changeInfoPlist(unixPathToApplication, "Add :UIDeviceFamily array")
+		changeInfoPlist(unixPathToApplication, "Add :UIDeviceFamily:0 integer " & deviceFamily)
+		
 		changeDevice(currentDevice)
 		
 		repeat with currentLang in allLanguages
@@ -81,7 +100,12 @@ on run argv
 			
 			tell application "iPhone Simulator" to quit
 		end repeat
+		changeInfoPlist(unixPathToApplication, "Delete :UIDeviceFamily")
 	end repeat
+	
+	-- restore the value of "UIDeviceFamily" field
+	changeInfoPlist(unixPathToApplication, "Copy :UIDeviceFamily_backup :UIDeviceFamily")
+	changeInfoPlist(unixPathToApplication, "Delete :UIDeviceFamily_backup")
 	
 	do shell script "rm -rf ./instrumentscli*"
 
@@ -97,7 +121,11 @@ on logEvent(themessage)
 	-- It can easily be opened with the regular "Console" app
 	set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & themessage
 	do shell script "echo '" & theLine & "' >> ~/Library/Logs/AppleScript-events.log"
-end log_event
+end logEvent
+
+on changeInfoPlist(appPath, plistCommand)
+	do shell script "/usr/libexec/PlistBuddy -c '" & plistCommand & "' '" & appPAth & "/Info.plist'"
+end changeInfoPlist
 
 on setupFolders()
 	-- Clear useless instrumentscli files and copy the screenshots to the proper folder
