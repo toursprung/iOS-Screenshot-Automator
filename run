@@ -5,8 +5,23 @@ on run argv
 	-- (has to match the name of the menu items of the iOS Simulator)
 	set allDevices to {"iPad (Retina)", "iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
 	-- Set all languages your app is translated to. 
-	set allLanguages to {"en", "tr" }
+	set allLanguages to {"en", "de" }
 	
+
+
+
+--	set allDevices to {"iPhone (Retina 4-inch)"}
+	-- Set all languages your app is translated to. 
+--	set allLanguages to {"en"}
+
+
+
+
+
+
+
+
+
 	set iOSVersion to "6.1"
 	
 	setupFolders()
@@ -107,7 +122,7 @@ on run argv
 	changeInfoPlist(unixPathToApplication, "Copy :UIDeviceFamily_backup :UIDeviceFamily")
 	changeInfoPlist(unixPathToApplication, "Delete :UIDeviceFamily_backup")
 	
-	do shell script "rm -rf ./instrumentscli*"
+--	do shell script "rm -rf ./instrumentscli*"
 
 	if length of errorLog > 10 then
 		logEvent("Some errors occurred: " & errorLog)

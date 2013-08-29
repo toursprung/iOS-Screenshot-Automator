@@ -1,0 +1,17 @@
+# Use my stackoverflow answer to change the carrier name
+# http://stackoverflow.com/questions/12580694/how-to-customize-carrier-name-in-ios-6-simulator/14292811#14292811
+
+cd ~/Desktop/
+ 
+# Copy the file here.
+sudo cp /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/CoreServices/SpringBoard.app/German.lproj/SpringBoard.strings ~/Desktop
+ 
+# Change the format from binary to XML.
+sudo plutil -convert xml1 SpringBoard.strings
+
+# When you open the .strings file with any text editor (e.g. Textmate, vim), you can search for CARRIER and replace its value
+ 
+# Now copy back to the simulator folder.
+sudo cp SpringBoard.strings /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/CoreServices/SpringBoard.app/German.lproj/
+
+# Make sure not to mix up any languages
