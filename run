@@ -3,26 +3,14 @@
 on run argv
 	-- Set all devices you want to use for screenshots here 
 	-- (has to match the name of the menu items of the iOS Simulator)
-	set allDevices to {"iPad (Retina)", "iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
+	--set allDevices to {"iPad (Retina)", "iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
+	set allDevices to {"iPhone Retina (4-inch)", "iPhone Retina (3.5-inch)"}
 	-- Set all languages your app is translated to. 
-	set allLanguages to {"en", "de" }
-	
+	set allLanguages to {"en", "de"}
 
+	-- Unfortunately, setting this to 6.0 or 6.1 will still run the simulator with 7.0
+	set iosVersion to "7.0"
 
-
---	set allDevices to {"iPhone (Retina 4-inch)"}
-	-- Set all languages your app is translated to. 
---	set allLanguages to {"en"}
-
-
-
-
-
-
-
-
-
-	set iOSVersion to "6.1"
 	
 	setupFolders()
 	
@@ -37,7 +25,7 @@ on run argv
 	set appName to item 2 of argv
 	
 	set automationTemplate to "instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
-	set applicationsFolder to "/Users/" & userName & "/Library/Application Support/iPhone Simulator/" & iOSVersion & "/Applications/"
+	set applicationsFolder to "/Users/" & userName & "/Library/Application Support/iPhone Simulator/" & iosVersion & "/Applications/"
 	
 	
 	set applicationsFolderPosix to POSIX file applicationsFolder
@@ -91,7 +79,7 @@ on run argv
 		changeInfoPlist(unixPathToApplication, "Add :UIDeviceFamily array")
 		changeInfoPlist(unixPathToApplication, "Add :UIDeviceFamily:0 integer " & deviceFamily)
 		
-		changeDevice(currentDevice)
+		changeDevice(currentDevice, iosVersion)
 		
 		repeat with currentLang in allLanguages
 			do shell script "./changeLanguage " & currentLang
@@ -170,29 +158,47 @@ on setupFolders()
 	end try
 end setupFolders
 
-on changeDevice(deviceName)
+on changeDevice(deviceName, version)
 	delay (1)
-	logEvent("Start changing device to " & deviceName)	
+	logEvent("Start changing device to " & deviceName & "iOS " & version)	
 	
 	tell application "iPhone Simulator" to activate
 	tell application "System Events"
-		tell process "iPhone Simulator"
-			tell menu bar 1
-				tell menu bar item 5
-					-- Hardware menu
-					tell menu 1
-						-- Device
-						tell menu item 1
-							-- Device sub menu
-							tell menu 1
-								click menu item deviceName
-							end tell
-						end tell
-          			end tell
-        		end tell
-      		end tell
-    	end tell
+		tell process "iOS-Simulator"
+	      tell menu bar 1
+	        -- Hardware menu bar item
+	        tell menu bar item 5
+	          -- Hardware menu
+	          tell menu 1
+	            -- Device menu item
+	            tell menu item 1
+	              -- Device sub menu
+	              tell menu 1
+	                tell menu item deviceName
+	                  set iosVersions to value of attribute "AXTitle" of every menu item of menu deviceName
+	                  repeat with iosVersionMenu in iosVersions
+	                    if iosVersionMenu contains version then
+	                      -- iOS Version
+	                      set newVersion to iosVersionMenu
+	                      click menu item iosVersionMenu of menu deviceName
+	                      
+	                      exit repeat
+	                    else
+	              
+	                    end if
+	                  end repeat
+	                end tell
+	              end tell
+	            end tell
+	          end tell
+	        end tell
+	      end tell
+	    end tell
   	end tell
+
+  tell application "System Events"
+    set visible of process "iOS-Simulator" to true
+  end tell
 	
-	logEvent("Changed device to " & deviceName)
+	logEvent("Changed device to " & deviceName & " and version " & newVersion)
 end changeDevice
