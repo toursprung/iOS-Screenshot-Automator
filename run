@@ -122,7 +122,7 @@ on run argv
 	changeInfoPlist(unixPathToApplication, "Copy :UIDeviceFamily_backup :UIDeviceFamily")
 	changeInfoPlist(unixPathToApplication, "Delete :UIDeviceFamily_backup")
 	
---	do shell script "rm -rf ./instrumentscli*"
+	do shell script "rm -rf ./instrumentscli*"
 
 	if length of errorLog > 10 then
 		logEvent("Some errors occurred: " & errorLog)
