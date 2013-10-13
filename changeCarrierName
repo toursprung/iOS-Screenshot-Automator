@@ -3,6 +3,8 @@
 
 cd ~/Desktop/
  
+# Don't forget to change the language English to the one you want to modify
+
 # Copy the file here.
 sudo cp /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.1.sdk/System/Library/CoreServices/SpringBoard.app/English.lproj/SpringBoard.strings ~/Desktop
  

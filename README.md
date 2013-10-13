@@ -3,6 +3,8 @@ iOS-Screenshot-Automator
 
 Batch-creates screenshots for all iOS devices in every language you define, ready for immediate upload in iTunes Connect. Uses and integrates with UIAutomation from Apple. Also great for unit testing.
 
+Follow the developer on Twitter: [KrauseFx](http://twitter.com/krausefx) (Felix Krause)
+
 The script is based on UIAutomation to navigate the app and take the screenshots.
 
 Define which languages and simulator types you want to use in the "run"-file. 
