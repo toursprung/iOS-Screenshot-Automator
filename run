@@ -3,7 +3,7 @@
 on run argv
 	-- Set all devices you want to use for screenshots here 
 	-- (has to match the name of the menu items of the iOS Simulator)
-	set allDevices to {"iPad (Retina)", "iPhone (Retina 3.5-inch)" , "iPhone (Retina 4-inch)"}
+	set allDevices to {"iPhone Retina (3.5-inch)" , "iPhone Retina (4-inch)", "iPad Retina"}
 	-- Set all languages your app is translated to. 
 	set allLanguages to {"en", "de" }
 	
@@ -22,7 +22,7 @@ on run argv
 
 
 
-	set iOSVersion to "6.1"
+	set iOSVersion to "7.0"
 	
 	setupFolders()
 	
@@ -104,7 +104,7 @@ on run argv
 			end if
 			
 			
-			logEvent(currentResults)
+			logEvent("Results: " & currentResults)
 			
 			try
 				do shell script "mv Results/Run\\ 1/* Latest/"
@@ -172,7 +172,7 @@ end setupFolders
 
 on changeDevice(deviceName)
 	delay (1)
-	logEvent("Start changing device to " & deviceName)	
+	logEvent("Start changing device to " & deviceName)
 	
 	tell application "iPhone Simulator" to activate
 	tell application "System Events"
