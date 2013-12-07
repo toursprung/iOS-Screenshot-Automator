@@ -16,13 +16,7 @@ on run argv
 
 
 
-
-
-
-
-
-
-	set iOSVersion to "7.0"
+	set iOSVersion to "7.0.3"
 	
 	setupFolders()
 	
@@ -52,7 +46,7 @@ on run argv
 		
 		repeat with currentSubfolder in subFiles
 			-- inside the app
-			if (currentSubFolder as string) contains appName then
+			if (currentSubFolder as string) contains (appName & ".app") then
 				set appFolderName to currentSubFolder
 			end if
 		end repeat
@@ -97,6 +91,7 @@ on run argv
 			do shell script "./changeLanguage " & currentLang
 			logEvent("Changed language to " & currentLang)
 			
+			logEvent("Executing " &  automationTemplate & " \"" & unixPathToApplication & "\" -e UIASCRIPT \"" & scriptName & "\" -e UIARESULTSPATH Results")
 			set currentResults to do shell script automationTemplate & " \"" & unixPathToApplication & "\" -e UIASCRIPT \"" & scriptName & "\" -e UIARESULTSPATH Results"
 			
 			if (currentResults as string) contains "Fail:" then
