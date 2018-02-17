@@ -1,7 +1,12 @@
-iOS-Screenshot-Automator - discontinued
+[discontinued] iOS-Screenshot-Automator
 ========================
 
-## Use [Snapshot](https://github.com/KrauseFx/snapshot) instead
+
+-----
+
+# Use [fastlane](https://docs.fastlane.tools/getting-started/ios/screenshots/) instead to automate your screenshots 👍
+
+-----
 
 Batch-creates screenshots for all iOS devices in every language you define, ready for immediate upload in iTunes Connect. Uses and integrates with UIAutomation from Apple. Also great for unit testing.
 
